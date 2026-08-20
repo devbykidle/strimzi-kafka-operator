@@ -1,8 +1,7 @@
-FROM registry.access.redhat.com/ubi9/ubi-minimal:latest
+FROM bellsoft/liberica-openjdk-alpine:21.0.4
 
 LABEL org.opencontainers.image.source='https://github.com/strimzi/strimzi-kafka-operator'
 
-ARG JAVA_VERSION=21
 ARG TARGETOS
 ARG TARGETARCH
 ARG strimzi_version
@@ -16,12 +15,23 @@ LABEL name='base' \
 
 USER root
 
-RUN microdnf update -y \
-    && microdnf --setopt=install_weak_deps=0 --setopt=tsflags=nodocs install -y java-${JAVA_VERSION}-openjdk-headless openssl shadow-utils \
-    && microdnf reinstall -y tzdata \
-    && microdnf clean all -y
-
-ENV JAVA_HOME=/usr/lib/jvm/jre-${JAVA_VERSION}
+# Устанавливаем необходимые пакеты для работы и распаковки
+RUN apk update && apk upgrade --no-cache
+RUN apk add --no-cache \
+      openssl \
+      shadow \
+      unzip \
+      curl \
+      bash \
+      tzdata \
+      gettext \
+      nmap \
+      net-tools \
+      findutils \
+      grep \
+      tar \
+    && cp /usr/share/zoneinfo/UTC /etc/localtime \
+    && echo "UTC" > /etc/timezone
 
 #####
 # Add Tini

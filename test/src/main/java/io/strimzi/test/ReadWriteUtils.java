@@ -145,8 +145,8 @@ public final class ReadWriteUtils {
             return null;
         }
         ObjectMapper mapper = new YAMLMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, !ignoreUnknownProperties);
-        try {
-            return mapper.readValue(url, c);
+        try (InputStream is = url.openStream()) {
+            return mapper.readValue(is, c);
         } catch (InvalidFormatException e) {
             throw new IllegalArgumentException(e);
         } catch (IOException e) {
@@ -223,7 +223,7 @@ public final class ReadWriteUtils {
         try {
             ObjectMapper mapper = new YAMLMapper()
                     .disable(YAMLGenerator.Feature.USE_NATIVE_TYPE_ID)
-                    .setSerializationInclusion(JsonInclude.Include.NON_EMPTY);
+                    .setDefaultPropertyInclusion(JsonInclude.Include.NON_EMPTY);
             return mapper.writeValueAsString(instance);
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
@@ -241,7 +241,7 @@ public final class ReadWriteUtils {
      */
     public static <T> String writeObjectToJsonString(T instance) {
         try {
-            ObjectMapper mapper = new ObjectMapper().setSerializationInclusion(JsonInclude.Include.NON_NULL);
+            ObjectMapper mapper = new ObjectMapper().setDefaultPropertyInclusion(JsonInclude.Include.NON_NULL);
             return mapper.writeValueAsString(instance);
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
