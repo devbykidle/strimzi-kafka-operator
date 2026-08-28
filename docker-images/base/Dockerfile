@@ -29,6 +29,8 @@ RUN apk add --no-cache \
       net-tools \
       findutils \
       grep \
+      sed \
+      gawk \
       tar \
     && cp /usr/share/zoneinfo/UTC /etc/localtime \
     && echo "UTC" > /etc/timezone

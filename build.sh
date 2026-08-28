@@ -3,7 +3,7 @@ set -e
 
 export STRIMZI_VERSION="$(cat release.version)"
 export IMAGE_TAG="${STRIMZI_VERSION}"
-export KAFKA_VERSION="4.1.0"
+export KAFKA_VERSION="4.2.0"
 export TRIVY_SEVERITY="HIGH,CRITICAL"
 export TRIVY_EXIT_CODE="1"
 MVN_ARGS="${MVN_ARGS:--B -ntp -DskipTests}"

@@ -37,6 +37,9 @@ ENV KAFKA_EXPORTER_HOME=/opt/kafka-exporter
 RUN mkdir $KAFKA_EXPORTER_HOME
 COPY kafka_exporter $KAFKA_EXPORTER_HOME
 COPY ./exporter-scripts $KAFKA_EXPORTER_HOME
+RUN chmod 0755 \
+      /opt/kafka-exporter/kafka_exporter_run.sh \
+      /opt/kafka-exporter/kafka_exporter
 
 #####
 # Add Prometheus JMX Exporter
