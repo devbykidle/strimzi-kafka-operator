@@ -29,7 +29,7 @@
         <grpc-netty-shaded.version>1.75.0</grpc-netty-shaded.version>
         <guava.version>32.1.3-jre</guava.version>
         <log4j.version>2.24.3</log4j.version>
-        <!-- Keep in sync with Jackson shipped in the Kafka 4.1.x distribution -->
+        <!-- Override Jackson from Kafka 4.1.x (ships 2.21.4); older jars are removed in the Kafka Dockerfile -->
         <jackson.version>2.21.7</jackson.version>
     </properties>
 
