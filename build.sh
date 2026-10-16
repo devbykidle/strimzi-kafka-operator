@@ -25,7 +25,7 @@ echo "Артефакты для Docker-образов собраны"
 make -C docker-images/base docker_build RELEASE_VERSION="$STRIMZI_VERSION" BUILD_TAG="$STRIMZI_VERSION" BUILD_ID="$CI_PIPELINE_ID" BUILD_COMMIT="$CI_COMMIT_SHA"
 echo "Базовый Docker-образ собран"
 
-#make -C docker-images/operator docker_build RELEASE_VERSION="$STRIMZI_VERSION" DOCKER_REGISTRY="$CI_REGISTRY" DOCKER_ORG="$CI_PROJECT_PATH" DOCKER_TAG="$IMAGE_TAG" BUILD_TAG="$STRIMZI_VERSION" BUILD_ID="$CI_PIPELINE_ID" BUILD_COMMIT="$CI_COMMIT_SHA"
+make -C docker-images/operator docker_build RELEASE_VERSION="$STRIMZI_VERSION" DOCKER_REGISTRY="$CI_REGISTRY" DOCKER_ORG="$CI_PROJECT_PATH" DOCKER_TAG="$IMAGE_TAG" BUILD_TAG="$STRIMZI_VERSION" BUILD_ID="$CI_PIPELINE_ID" BUILD_COMMIT="$CI_COMMIT_SHA"
 echo "Docker-образ оператора собран и отправлен в реестр"
 
 make -C docker-images/kafka-based docker_build DOCKER_REGISTRY="$CI_REGISTRY" DOCKER_ORG="$CI_PROJECT_PATH" DOCKER_TAG="$IMAGE_TAG" BUILD_TAG="$STRIMZI_VERSION" BUILD_ID="$STRIMZI_VERSION"
@@ -36,9 +36,9 @@ export STRIMZI_KAFKA_IMAGE="strimzi/kafka:build-kafka-${KAFKA_VERSION}"
 echo "Переменные образов Strimzi настроены"
 
 scan_status=0
-#trivy image --no-progress --severity "$TRIVY_SEVERITY" --exit-code "$TRIVY_EXIT_CODE" --format json --output trivy-operator.json "$STRIMZI_OPERATOR_IMAGE" || scan_status=$?
+trivy image --no-progress --severity "$TRIVY_SEVERITY" --exit-code "$TRIVY_EXIT_CODE" --format json --output trivy-operator.json "$STRIMZI_OPERATOR_IMAGE" || scan_status=$?
 trivy image --no-progress --severity "$TRIVY_SEVERITY" --exit-code "$TRIVY_EXIT_CODE" --format json --output trivy-kafka.json "$STRIMZI_KAFKA_IMAGE" || scan_status=$?
 
-#trivy image --no-progress --severity "$TRIVY_SEVERITY" --format table "$STRIMZI_OPERATOR_IMAGE"
+trivy image --no-progress --severity "$TRIVY_SEVERITY" --format table "$STRIMZI_OPERATOR_IMAGE"
 trivy image --no-progress --severity "$TRIVY_SEVERITY" --format table "$STRIMZI_KAFKA_IMAGE"
 exit "$scan_status"
