@@ -47,15 +47,15 @@ done
 echo "Переменные образов Strimzi настроены"
 
 scan_status=0
-#trivy image --no-progress --severity "$TRIVY_SEVERITY" --exit-code "$TRIVY_EXIT_CODE" --format json --output trivy-operator.json "$STRIMZI_OPERATOR_IMAGE" || scan_status=$?
-#trivy image --no-progress --severity "$TRIVY_SEVERITY" --format table "$STRIMZI_OPERATOR_IMAGE"
+trivy image --no-progress --severity "$TRIVY_SEVERITY" --exit-code "$TRIVY_EXIT_CODE" --format json --output trivy-operator.json "$STRIMZI_OPERATOR_IMAGE" || scan_status=$?
+trivy image --no-progress --severity "$TRIVY_SEVERITY" --format table "$STRIMZI_OPERATOR_IMAGE"
 
-#for kafka_image in "${STRIMZI_KAFKA_IMAGES[@]}"; do
-#  kafka_version="${kafka_image##*-kafka-}"
-#  trivy image --no-progress --severity "$TRIVY_SEVERITY" --exit-code "$TRIVY_EXIT_CODE" \
-#    --format json --output "trivy-kafka-${kafka_version}.json" "$kafka_image" || scan_status=$?
-#  trivy image --no-progress --severity "$TRIVY_SEVERITY" --format table "$kafka_image"
-#done
+for kafka_image in "${STRIMZI_KAFKA_IMAGES[@]}"; do
+  kafka_version="${kafka_image##*-kafka-}"
+  trivy image --no-progress --severity "$TRIVY_SEVERITY" --exit-code "$TRIVY_EXIT_CODE" \
+    --format json --output "trivy-kafka-${kafka_version}.json" "$kafka_image" || scan_status=$?
+  trivy image --no-progress --severity "$TRIVY_SEVERITY" --format table "$kafka_image"
+done
 
 mkdir -p "$IMAGES_DIR"
 for image in "${IMAGES_TO_SAVE[@]}"; do
