@@ -63,3 +63,7 @@ hs_err_pid*
 .claude/
 CLAUDE.md
 .mcp.json
+
+# Kafka dist archives must not be committed (download via kafka-versions.yaml URLs)
+docker-images/artifacts/kafka_2.13-*.tgz
+docker-images/artifacts/*.tgz
