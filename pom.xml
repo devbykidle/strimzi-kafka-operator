@@ -87,6 +87,8 @@
         <kafka.version>4.2.0</kafka.version>
         <yammer-metrics.version>2.2.0</yammer-metrics.version>
         <snappy.version>1.1.10.5</snappy.version>
+        <!-- Override kafka-clients transitive lz4-java 1.10.1 (CVE-2026-106451 / GHSA-mcr4-qmvw-px4g) -->
+        <lz4-java.version>1.11.4</lz4-java.version>
         <slf4j.version>2.0.17</slf4j.version>
         <log4j.version>2.25.3</log4j.version>
         <quartz.version>2.5.0</quartz.version>
@@ -367,6 +369,12 @@
                 <groupId>org.apache.kafka</groupId>
                 <artifactId>kafka-clients</artifactId>
                 <version>${kafka.version}</version>
+            </dependency>
+            <dependency>
+                <!-- transitive from kafka-clients; bump for CVE-2026-106451 -->
+                <groupId>at.yawk.lz4</groupId>
+                <artifactId>lz4-java</artifactId>
+                <version>${lz4-java.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.kafka</groupId>

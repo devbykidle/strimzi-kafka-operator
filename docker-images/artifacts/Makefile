@@ -8,9 +8,6 @@ DOCKER_TAG ?= latest
 clean:
 	rm -rf binaries
 	rm -rf kafka-thirdparty-libs/*/target
-	mkdir -p binaries/kafka/archives
-	cp kafka_2.13-4.2.0.tgz binaries/kafka/archives
-	cp kafka_2.13-4.1.0.tgz binaries/kafka/archives
 
 java_build:
 	./build.sh
