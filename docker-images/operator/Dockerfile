@@ -18,6 +18,7 @@ RUN mkdir -p ${STRIMZI_HOME}/bin
 WORKDIR ${STRIMZI_HOME}
 
 COPY scripts/ tmp/bin/ bin/
+RUN chmod +x bin/cluster_operator_run.sh
 
 COPY tmp/lib/ lib/
 
