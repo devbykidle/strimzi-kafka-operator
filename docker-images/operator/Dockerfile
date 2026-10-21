@@ -18,11 +18,11 @@ RUN mkdir -p ${STRIMZI_HOME}/bin
 WORKDIR ${STRIMZI_HOME}
 
 COPY scripts/ tmp/bin/ bin/
-RUN chmod +x bin/cluster_operator_run.sh
-
 COPY tmp/lib/ lib/
 
 RUN mkdir -p ${STRIMZI_HOME}/../v1-api-conversion
 COPY tmp/v1-api-conversion/ ../v1-api-conversion/
+
+RUN chmod -R +rx bin/
 
 USER 1001
