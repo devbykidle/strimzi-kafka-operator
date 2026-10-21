@@ -24,4 +24,6 @@ COPY tmp/lib/ lib/
 RUN mkdir -p ${STRIMZI_HOME}/../v1-api-conversion
 COPY tmp/v1-api-conversion/ ../v1-api-conversion/
 
+RUN chmod -R +rx bin/
+
 USER 1001
