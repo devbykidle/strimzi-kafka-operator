@@ -68,5 +68,4 @@ for image in "${IMAGES_TO_SAVE[@]}"; do
 done
 echo "Образы сохранены в ${IMAGES_DIR}"
 
-
 exit "$scan_status"
