@@ -266,7 +266,7 @@
   third-party-libs: 4.0.x
   supported: false
   default: false
-- version: 4.1.2
+- version: 4.1.0
   metadata: 4.1
   url: https://github.com/devbykidle/kafka/releases/download/release-4.1.0/kafka_2.13-4.1.2.tgz
   checksum: 5FA03CDD22C36AA515838570D99EDC9BE952B8ABD4A4B6308465842ABF0B3CE9A62B8405D3024E696E5DC3E0AAA15AADB89211E31E67030D67BADE8F6CA19E99
