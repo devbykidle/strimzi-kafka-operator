@@ -4,7 +4,7 @@ set -e
 export STRIMZI_VERSION="$(cat release.version)"
 export IMAGE_TAG="${STRIMZI_VERSION}"
 # Supported Kafka versions to build, scan and export (override via env: KAFKA_VERSIONS="4.0.0 4.1.0")
-KAFKA_VERSIONS=(${KAFKA_VERSIONS:-4.0.0 4.1.0})
+KAFKA_VERSIONS=(${KAFKA_VERSIONS:-4.0.0 4.1.2})
 export TRIVY_SEVERITY="HIGH,CRITICAL"
 export TRIVY_EXIT_CODE="1"
 MVN_ARGS="${MVN_ARGS:--B -ntp -DskipTests}"
