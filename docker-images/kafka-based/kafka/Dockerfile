@@ -30,6 +30,7 @@ COPY $KAFKA_DIST_DIR $KAFKA_HOME
 COPY ./scripts/ $KAFKA_HOME
 RUN mkdir $KAFKA_HOME/plugins
 
+
 #####
 # Add Kafka Exporter
 #####
