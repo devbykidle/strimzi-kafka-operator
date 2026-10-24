@@ -30,7 +30,6 @@ COPY $KAFKA_DIST_DIR $KAFKA_HOME
 COPY ./scripts/ $KAFKA_HOME
 RUN mkdir $KAFKA_HOME/plugins
 
-
 #####
 # Add Kafka Exporter
 #####
@@ -89,12 +88,6 @@ COPY ./tmp/tracing-agent-${STRIMZI_VERSION}.jar ${KAFKA_HOME}/libs/
 # Add 3rd party libs
 #####
 COPY tmp/thirdparty-libs-${THIRD_PARTY_LIBS}/ ${KAFKA_HOME}/libs/
-# Drop Kafka-bundled Jackson jars superseded by third-party libs (e.g. 2.21.4 vs 2.21.7 CVE bump).
-# Leaving both versions causes classpath collisions (same class in two jars).
-RUN rm -f \
-        ${KAFKA_HOME}/libs/jackson-core-2.21.4.jar \
-        ${KAFKA_HOME}/libs/jackson-databind-2.21.4.jar \
-        ${KAFKA_HOME}/libs/jackson-dataformat-yaml-2.21.4.jar
 
 #####
 # Add Cruise Control
