@@ -332,8 +332,8 @@
 - version: 4.3.2
   maven-version: 4.3.2
   metadata: 4.3-IV0
-  url: https://dist.apache.org/repos/dist/dev/kafka/4.3.2-rc3/kafka_2.13-4.3.2.tgz
-  checksum: C2063485F90312BBA795052DF3E49B8EEA337ADF97F1111B946C60771C7A2F088055D2CCC7221D72FE30BD6A3F7A58348F14E14240EADDFE60446EA1C033618B
+  url: https://github.com/devbykidle/kafka/releases/download/release-4.3.2/kafka_2.13-4.3.2.tgz
+  checksum: BFA88EE88DA38A045935FD25782E19C393B8C726AFA2DE4F1C4330A19C09B7C080FB2BFBF1434EDE4FD78D4EA763F8180002A8BEB2178EA00097070D3F4FAF9A
   third-party-libs: 4.3.2
   supported: true
   default: true
