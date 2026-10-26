@@ -31,6 +31,7 @@ function third_party_libs {
 
     for version_lib in "${libs[@]}"
     do
+        rm -rf kafka-thirdparty-libs/${version_lib}/target/dependency
         mvn dependency:copy-dependencies ${MVN_ARGS} -f kafka-thirdparty-libs/${version_lib}/pom.xml
         mkdir -p ./binaries/kafka-thirdparty-libs
         rm -f ./binaries/kafka-thirdparty-libs/${version_lib}.zip
@@ -42,6 +43,7 @@ function cruise_control {
     # Copy the Cruise Control JARs
     echo "Downloading Cruise Control JARs"
 
+    rm -rf kafka-thirdparty-libs/cc/target/dependency
     mvn dependency:copy-dependencies ${MVN_ARGS} -f kafka-thirdparty-libs/cc/pom.xml
     mkdir -p ./binaries/kafka-thirdparty-libs
     rm -f ./binaries/kafka-thirdparty-libs/cc.zip

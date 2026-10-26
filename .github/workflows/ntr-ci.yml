@@ -14,7 +14,7 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  KAFKA_VERSIONS: "4.2.0 4.3.0"
+  KAFKA_VERSIONS: "4.2.0 4.3.2"
   JAVA_VERSION: "21"
   MVN_ARGS: "-B -ntp -DskipTests"
   TRIVY_SEVERITY: "HIGH,CRITICAL"
