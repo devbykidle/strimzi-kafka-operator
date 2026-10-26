@@ -15,6 +15,10 @@
         </license>
     </licenses>
 
+    <!--
+    Custom Kafka 4.2.0 build uses Jackson 2.21.7 (and Log4j2 2.25.3). Keep third-party
+    Jackson in sync so we do not collide with the Kafka distribution jars.
+    -->
     <properties>
         <strimzi-oauth.version>0.18.0</strimzi-oauth.version>
         <strimzi-metrics-reporter.version>0.4.0</strimzi-metrics-reporter.version>
@@ -25,7 +29,8 @@
         <opentelemetry.version>1.63.0</opentelemetry.version>
         <opentelemetry.instrumentation.version>1.32.0-alpha</opentelemetry.instrumentation.version>
         <grpc-netty-shaded.version>1.79.0</grpc-netty-shaded.version>
-        <log4j.version>2.25.4</log4j.version>
+        <log4j.version>2.25.3</log4j.version>
+        <jackson.version>2.21.7</jackson.version>
     </properties>
 
     <dependencies>
@@ -332,7 +337,21 @@
         <dependency>
             <groupId>com.fasterxml.jackson.datatype</groupId>
             <artifactId>jackson-datatype-jsr310</artifactId>
-            <version>2.19.2</version>
+            <version>${jackson.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.fasterxml.jackson.core</groupId>
+                    <artifactId>jackson-core</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.fasterxml.jackson.core</groupId>
+                    <artifactId>jackson-annotations</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.fasterxml.jackson.core</groupId>
+                    <artifactId>jackson-databind</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
     </dependencies>
 </project>
