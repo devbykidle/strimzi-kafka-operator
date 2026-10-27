@@ -35,14 +35,12 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      # GITHUB_TOKEN alone cannot pull a private GHCR package unless that package
-      # grants this repository Actions access. Prefer a PAT (read:packages).
       - name: Login to GHCR
         uses: docker/login-action@v3
         with:
           registry: ghcr.io
-          username: ${{ github.repository_owner }}
-          password: ${{ secrets.KAFKA_DIST_TOKEN || secrets.GITHUB_TOKEN }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
 
       - uses: actions/setup-java@v4
         with:
@@ -203,8 +201,7 @@ jobs:
       - name: Install Trivy
         run: |
           set -euo pipefail
-          # Pin to a release that still exists on GitHub (older tags are pruned).
-          VER=0.76.0
+          VER=0.54.1
           curl -sSfL \
             "https://github.com/aquasecurity/trivy/releases/download/v${VER}/trivy_${VER}_Linux-64bit.tar.gz" \
             -o /tmp/trivy.tgz
