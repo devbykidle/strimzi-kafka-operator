@@ -25,6 +25,7 @@
         <opentelemetry.version>1.63.0</opentelemetry.version>
         <opentelemetry.instrumentation.version>1.32.0-alpha</opentelemetry.instrumentation.version>
         <grpc-netty-shaded.version>1.79.0</grpc-netty-shaded.version>
+        <guava.version>33.7.2-android</guava.version>
         <log4j.version>2.25.4</log4j.version>
     </properties>
 
@@ -115,6 +116,16 @@
                     <artifactId>error_prone_annotations</artifactId>
                 </exclusion>
             </exclusions>
+        </dependency>
+        <!--
+        The OpenTelemetry gRPC exporter pulls in guava transitively. Pin the fixed
+        version to address CVE-2026-102554 (guava < 33.7.2), matching the version
+        pinned in the Cruise Control third-party libs pom.
+        -->
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>${guava.version}</version>
         </dependency>
         <!-- OAuth -->
         <dependency>
