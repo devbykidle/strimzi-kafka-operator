@@ -1,13 +1,42 @@
-#####
-# Build the helper container image for downloading prerequisites
-#####
-FROM registry.access.redhat.com/ubi9/ubi-minimal:latest AS downloader
+FROM bellsoft/liberica-openjdk-alpine:21.0.4
+
+LABEL org.opencontainers.image.source='https://github.com/strimzi/strimzi-kafka-operator'
 
 ARG TARGETOS
 ARG TARGETARCH
+ARG strimzi_version
+
+LABEL name='base' \
+    vendor='Strimzi' \
+    version="${strimzi_version}" \
+    release="${strimzi_version}" \
+    summary='Base image of the Strimzi Kafka Operator project.' \
+    description='Strimzi Kafka Operator base image, containing common utilities across all component images.'
+
+USER root
+
+# Устанавливаем необходимые пакеты для работы и распаковки
+RUN apk update && apk upgrade --no-cache
+RUN apk add --no-cache \
+      openssl \
+      shadow \
+      unzip \
+      curl \
+      bash \
+      tzdata \
+      gettext \
+      nmap \
+      net-tools \
+      findutils \
+      grep \
+      sed \
+      gawk \
+      tar \
+    && cp /usr/share/zoneinfo/UTC /etc/localtime \
+    && echo "UTC" > /etc/timezone
 
 #####
-# Get Tini
+# Add Tini
 #####
 ENV TINI_VERSION=v0.19.0
 ENV TINI_SHA256_AMD64=93dcc18adc78c65a028a84799ecf8ad40c936fdfc5f2a57b1acda5a8117fa82c
@@ -33,42 +62,3 @@ RUN set -ex; \
         echo "${TINI_SHA256_AMD64} */usr/bin/tini" | sha256sum -c; \
         chmod +x /usr/bin/tini; \
     fi
-
-#####
-# Build the main container image
-#####
-FROM registry.access.redhat.com/ubi9/ubi-minimal:latest
-
-LABEL org.opencontainers.image.source='https://github.com/strimzi/strimzi-kafka-operator'
-
-ARG JAVA_VERSION=21
-ARG TARGETOS
-ARG TARGETARCH
-ARG strimzi_version
-
-LABEL name='base' \
-    vendor='Strimzi' \
-    version="${strimzi_version}" \
-    release="${strimzi_version}" \
-    summary='Base image of the Strimzi Kafka Operator project.' \
-    description='Strimzi Kafka Operator base image, containing common utilities across all component images.'
-
-USER root
-
-RUN microdnf update -y \
-    && microdnf --setopt=install_weak_deps=0 --setopt=tsflags=nodocs install -y  \
-            # Needed to run Java applications \
-            java-${JAVA_VERSION}-openjdk-headless \
-            # Needed to work with TLS certificates in our shell scripts as well as from our own Java code \
-            openssl \
-            # Needed to add non-root users to our container images \
-            shadow-utils \
-    && microdnf reinstall -y tzdata \
-    && microdnf clean all -y
-
-ENV JAVA_HOME=/usr/lib/jvm/jre-${JAVA_VERSION}
-
-#####
-# Copy Tini from the downloader stage
-#####
-COPY --from=downloader /usr/bin/tini /usr/bin/tini
