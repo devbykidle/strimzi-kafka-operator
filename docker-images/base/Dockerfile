@@ -1,4 +1,4 @@
-FROM bellsoft/liberica-openjdk-alpine:21.0.4
+FROM ghcr.io/devbykidle/axiom-runtime-container-pro:jdk-21.0.2_14-musl
 
 LABEL org.opencontainers.image.source='https://github.com/strimzi/strimzi-kafka-operator'
 
