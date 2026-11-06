@@ -14,6 +14,8 @@ LABEL name='base' \
     description='Strimzi Kafka Operator base image, containing common utilities across all component images.'
 
 USER root
+# Исправляем устаревший домен репозитория Axiom на актуальный
+RUN sed -i 's|pkg\.axiomjdk\.ru|packages.axiom.ru|g' /etc/apk/repositories
 
 # Устанавливаем необходимые пакеты для работы и распаковки
 RUN apk update && apk upgrade --no-cache
