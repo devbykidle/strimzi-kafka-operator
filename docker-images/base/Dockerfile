@@ -1,9 +1,7 @@
-FROM ghcr.io/devbykidle/axiom-runtime-container-pro:jdk-21.0.2_14-musl
+FROM artifactory.dev.ppod.cbr.ru:5002/purchased/axiom-runtime-container-pro:jdk-21.0.2_14-glibc
 
 LABEL org.opencontainers.image.source='https://github.com/strimzi/strimzi-kafka-operator'
 
-ARG TARGETOS
-ARG TARGETARCH
 ARG strimzi_version
 
 LABEL name='base' \
@@ -14,11 +12,17 @@ LABEL name='base' \
     description='Strimzi Kafka Operator base image, containing common utilities across all component images.'
 
 USER root
-# Исправляем устаревший домен репозитория Axiom на актуальный
-RUN sed -i 's|pkg\.axiomjdk\.ru|packages.axiom.ru|g' /etc/apk/repositories
 
-# Устанавливаем необходимые пакеты для работы и распаковки
+# The vendor image still points at the old pkg.axiomjdk.ru host, which now
+# answers HTTP 401 ("private repository"). The current public Axiom Linux
+# repository is served from packages.axiomjdk.ru.
+RUN sed -i 's|pkg\.axiomjdk\.ru|packages.axiomjdk\.ru|g' /etc/apk/repositories
+
+# Устанавливаем необходимые пакеты для работы и распаковки.
+# `tini` is installed from the APK repository: the binaries published in the
+# upstream GitHub release are glibc-linked and fail with "not found" on musl.
 RUN apk update && apk upgrade --no-cache
+# `netstat` and `nc` are provided by busybox in this image.
 RUN apk add --no-cache \
       openssl \
       shadow \
@@ -27,40 +31,12 @@ RUN apk add --no-cache \
       bash \
       tzdata \
       gettext \
-      nmap \
-      net-tools \
       findutils \
       grep \
       sed \
       gawk \
       tar \
+      tini \
     && cp /usr/share/zoneinfo/UTC /etc/localtime \
-    && echo "UTC" > /etc/timezone
-
-#####
-# Add Tini
-#####
-ENV TINI_VERSION=v0.19.0
-ENV TINI_SHA256_AMD64=93dcc18adc78c65a028a84799ecf8ad40c936fdfc5f2a57b1acda5a8117fa82c
-ENV TINI_SHA256_ARM64=07952557df20bfd2a95f9bef198b445e006171969499a1d361bd9e6f8e5e0e81
-ENV TINI_SHA256_PPC64LE=3f658420974768e40810001a038c29d003728c5fe86da211cff5059e48cfdfde
-ENV TINI_SHA256_S390X=931b70a182af879ca249ae9de87ef68423121b38d235c78997fafc680ceab32d
-
-RUN set -ex; \
-    if [[ "${TARGETOS}/${TARGETARCH}" = "linux/ppc64le" ]]; then \
-        curl -s -L https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini-ppc64le -o /usr/bin/tini; \
-        echo "${TINI_SHA256_PPC64LE} */usr/bin/tini" | sha256sum -c; \
-        chmod +x /usr/bin/tini; \
-    elif [[ "${TARGETOS}/${TARGETARCH}" = "linux/arm64" ]]; then \
-        curl -s -L https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini-arm64 -o /usr/bin/tini; \
-        echo "${TINI_SHA256_ARM64} */usr/bin/tini" | sha256sum -c; \
-        chmod +x /usr/bin/tini; \
-    elif [[ "${TARGETOS}/${TARGETARCH}" = "linux/s390x" ]]; then \
-        curl -s -L https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini-s390x -o /usr/bin/tini; \
-        echo "${TINI_SHA256_S390X} */usr/bin/tini" | sha256sum -c; \
-        chmod +x /usr/bin/tini; \
-    else \
-        curl -s -L https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini -o /usr/bin/tini; \
-        echo "${TINI_SHA256_AMD64} */usr/bin/tini" | sha256sum -c; \
-        chmod +x /usr/bin/tini; \
-    fi
+    && echo "UTC" > /etc/timezone \
+    && ln -sf /sbin/tini /usr/bin/tini
