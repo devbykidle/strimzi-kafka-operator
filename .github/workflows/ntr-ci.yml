@@ -47,7 +47,7 @@ jobs:
       - name: Pull private base image
         run: |
           set -euo pipefail
-          BASE=ghcr.io/${{ github.repository_owner }}/axiom-runtime-container-pro:jdk-21.0.2_14-musl
+          BASE=ghcr.io/${{ github.repository_owner }}/axiom-runtime-container-pro:jdk-21.0.2_14-glibc
           if ! docker pull "$BASE"; then
             echo "::error::Cannot pull ${BASE} (403/404)."
             echo "1) Push locally: ./.github/ntr/push-base-to-ghcr.sh"

@@ -1,4 +1,4 @@
-FROM artifactory.dev.ppod.cbr.ru:5002/purchased/axiom-runtime-container-pro:jdk-21.0.2_14-glibc
+FROM ghcr.io/devbykidle/axiom-runtime-container-pro:jdk-21.0.2_14-glibc
 
 LABEL org.opencontainers.image.source='https://github.com/strimzi/strimzi-kafka-operator'
 
