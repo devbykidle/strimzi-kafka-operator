@@ -27,6 +27,8 @@
         <netty.version>4.1.139.Final</netty.version>
         <!-- Override kafka-clients transitive lz4-java 1.10.1 (CVE-2026-106451 / GHSA-mcr4-qmvw-px4g) -->
         <lz4-java.version>1.11.4</lz4-java.version>
+        <guava.version>33.7.2-jre</guava.version>
+        <snappy.version>1.1.10.9</snappy.version>
     </properties>
 
     <repositories>
@@ -85,6 +87,16 @@
                 <groupId>at.yawk.lz4</groupId>
                 <artifactId>lz4-java</artifactId>
                 <version>${lz4-java.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.google.guava</groupId>
+                <artifactId>guava</artifactId>
+                <version>${guava.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.xerial.snappy</groupId>
+                <artifactId>snappy-java</artifactId>
+                <version>${snappy.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

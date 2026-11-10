@@ -31,6 +31,7 @@
         <log4j.version>2.25.3</log4j.version>
         <!-- Override Jackson from Kafka 4.2.x (ships 2.21.4); older jars are removed in the Kafka Dockerfile -->
         <jackson.version>2.21.7</jackson.version>
+        <snappy.version>1.1.10.9</snappy.version>
     </properties>
 
     <repositories>
@@ -60,6 +61,11 @@
                 <groupId>com.fasterxml.jackson.core</groupId>
                 <artifactId>jackson-databind</artifactId>
                 <version>${jackson.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.xerial.snappy</groupId>
+                <artifactId>snappy-java</artifactId>
+                <version>${snappy.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
